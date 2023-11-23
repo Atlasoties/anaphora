@@ -1,9 +1,9 @@
 <?php
-namespace Jaktech\Anaphora\Facades;
+namespace Jaktech\Anaphora;
 
 use Illuminate\Support\Facades\Facade;
 
-class Anaphora extends Facade
+class AnaphoraFacade extends Facade
 {
     protected static function getFacadeAccessor()
     {

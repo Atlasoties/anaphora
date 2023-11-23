@@ -6,6 +6,6 @@ return [
     	Jaktech\Anaphora\AnaphoraServiceProvider::class,
 	],
 	'aliases' => [
-    	'Anaphora' => Jaktech\Anaphora\Facades\AnaphoraFacade::class,
+    	'Anaphora' => Jaktech\Anaphora\AnaphoraFacade::class,
 	],
 ];

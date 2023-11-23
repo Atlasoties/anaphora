@@ -3,11 +3,16 @@
 namespace Jaktech\Anaphora\Tests;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use Jaktech\Anaphora\Exceptions\ArgumentExceptions;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Jaktech\Anaphora\Tests\Models\User;
+use Jaktech\Anaphora\Traits\Reportable;
 use Orchestra\Testbench\TestCase;
+use Jaktech\Anaphora\Tests\Database\Migrations\CreateUsersTable;
+
+use Jaktech\Anaphora\Tests\Models\User;
 
 class ReportableTest extends TestCase
 {
@@ -17,62 +22,56 @@ class ReportableTest extends TestCase
     {
         parent::setUp();
 
-        // Migrate anaphoras package database tables
-        $this->artisan('migrate', ['--database' => 'anaphora']);
+        // Set up the database for testing
+        $this->setUpDatabase();
     }
 
-    /** @test */
-    public function it_can_scope_yearly_report()
+    protected function setUpDatabase()
     {
-        // Create a model using the Reportable trait
-        $model = new User;
+        // Define a test model
+        (new CreateUsersTable())->down();
 
-        // Create some sample data
-        $this->createSampleData($model);
-
-        // Use the scope
-        $result = $model->yearlyReport(2022)->get();
-
-        // Assert your expectations
-        $this->assertCount(2, $result);
+        (new CreateUsersTable())->up();
     }
 
-    // Add more tests for other scopes...
-
-    protected function getEnvironmentSetUp($app)
+    public function testYearlyReport()
     {
-        // Define your package's database migration
-        include_once __DIR__ . '/../database/migrations/create_anaphora_tables.php.stub';
+        $model = User::create();
 
-        // Run your package's database migrations
-        (new \CreateAnaphoraTables())->up();
+        $this->assertCount(1, User::yearlyReport()->get());
+        $this->assertCount(0, User::yearlyReport(2022)->get());
+        $this->assertCount(1, User::thisYearReport()->get());
+        $this->assertCount(0, User::lastYearReport()->get());
     }
 
-    public function createApplication()
+    public function testMonthlyReport()
     {
-        $app = parent::createApplication();
+        $model = User::create();
 
-        // Use an in-memory database for testing
-        $app['config']->set('database.default', 'anaphora');
-        $app['config']->set('database.connections.anaphora', [
-            'driver' => 'mysql',
-            'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'anaphora'),
-            'username' => env('DB_USERNAME', 'root'),
-            'password' => env('DB_PASSWORD', ''),
-
-        ]);
-
-        return $app;
+        $this->assertCount(1, User::monthlyReport()->get());
+        $this->assertCount(0, User::monthlyReport(null, 2022)->get());
+        $this->assertCount(1, User::thisMonthReport()->get());
+        $this->assertCount(0, User::lastMonthReport()->get());
     }
 
-    protected function createSampleData(Model $model)
+    // ... (similar tests for other scopes)
+
+    public function testCustomColumnReport()
     {
-        $model->create(['created_at' => Carbon::now()]);
-        $model->create(['created_at' => Carbon::now()->subYear()]);
-        $model->create(['created_at' => Carbon::now()->subYear()]);
-        $model->create(['created_at' => Carbon::now()->addYear()]);
+        $model = User::create();
+
+        $this->assertCount(1, User::yearlyReport(null, 'custom_date_column')->get());
+        $this->assertCount(1, User::thisYearReport('custom_date_column')->get());
+        $this->assertCount(0, User::lastYearReport('custom_date_column')->get());
+    }
+
+    public function testInvalidColumnException()
+    {
+        $this->expectException(\Exception::class);
+
+        $model = User::create();
+
+        // Invalid column 'invalid_column'
+        User::yearlyReport(null, 'invalid_column')->get();
     }
 }

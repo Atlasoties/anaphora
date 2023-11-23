@@ -1,10 +1,11 @@
 <?php
+namespace Jaktech\Anaphora\Tests\Database\Migrations;
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAnaphoraTables extends Migration
+class CreateUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +15,8 @@ class CreateAnaphoraTables extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->timestamp('created_at')->nullable();
+            $table->timestamps();
+            $table->date('custom_date_column')->default(now());
         });
     }
 
