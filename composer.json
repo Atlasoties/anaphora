@@ -1,0 +1,37 @@
+{
+    "name": "jaktech/anaphora",
+    "description": "Anaphora is a robust Laravel reporting package that simplifies the generation and retrieval of insightful reports. With Anaphora, effortlessly create, manage, and retrieve reports for your Laravel applications, providing a streamlined experience for tracking, analyzing, and visualizing essential data. Harness the power of Anaphora to enhance your reporting capabilities and make informed decisions based on comprehensive and organized data insights.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": ["laravel", "report", "anaphora", "ethiopia"],
+    "autoload": {
+        "psr-4": {
+            "Jaktech\\Anaphora\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Jaktech\\Anaphora\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^7.2|~8.0.0|~8.1.0|~8.2.0",
+        "illuminate/support": "*"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.15",
+        "phpunit/phpunit": "^10.4"
+    },
+    "authors": [
+        {
+            "name": "Kasegn Worku",
+            "email": "minasworku@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "config": {
+        "sort-packages": true,
+        "preferred-install": "dist",
+        "optimize-autoloader": true
+     }
+}
