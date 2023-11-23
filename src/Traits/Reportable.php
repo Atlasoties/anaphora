@@ -16,9 +16,9 @@ trait Reportable
      *
      * @return Builder|\Illuminate\Database\Query\Builder
      */
-    public function scopeYearlyReport(Builder $query, $year = null)
+    public function scopeYearlyReport(Builder $query, $year = null, $column = 'created_at')
     {
-        return $query->whereYear('created_at', $year ?? Carbon::now()->year);
+        return $query->whereYear($column, $year ?? Carbon::now()->year);
     }
 
     /**
@@ -26,9 +26,9 @@ trait Reportable
      *
      * @return Builder|\Illuminate\Database\Query\Builder
      */
-    public function scopeThisYearReport(Builder $query)
+    public function scopeThisYearReport(Builder $query, $column = 'created_at')
     {
-        return $query->whereYear('created_at', Carbon::now()->year);
+        return $query->whereYear($column, Carbon::now()->year);
     }
 
     /**
@@ -36,9 +36,9 @@ trait Reportable
      *
      * @return Builder|\Illuminate\Database\Query\Builder
      */
-    public function scopeLastYearReport(Builder $query)
+    public function scopeLastYearReport(Builder $query, $column = 'created_at')
     {
-        return $query->whereYear('created_at', Carbon::now()->subYear()->year);
+        return $query->whereYear($column, Carbon::now()->subYear()->year);
     }
 
     /**
@@ -48,9 +48,9 @@ trait Reportable
      *
      * @return Builder|\Illuminate\Database\Query\Builder
      */
-    public function scopeMonthlyReport(Builder $query, $month = null, $year = null)
+    public function scopeMonthlyReport(Builder $query, $month = null, $year = null, $column = 'created_at')
     {
-        return $query->whereYear('created_at', $year ?? Carbon::now()->year)->whereMonth('created_at', $month ?? Carbon::now()->month);
+        return $query->whereYear($column, $year ?? Carbon::now()->year)->whereMonth($column, $month ?? Carbon::now()->month);
     }
 
     /**
@@ -58,9 +58,9 @@ trait Reportable
      *
      * @return Builder|\Illuminate\Database\Query\Builder
      */
-    public function scopeThisMonthReport(Builder $query)
+    public function scopeThisMonthReport(Builder $query, $column = 'created_at')
     {
-        return $query->whereYear('created_at', Carbon::now()->year)->whereMonth('created_at', Carbon::now()->month);
+        return $query->whereYear($column, Carbon::now()->year)->whereMonth($column, Carbon::now()->month);
     }
 
     /**
@@ -68,9 +68,9 @@ trait Reportable
      *
      * @return Builder|\Illuminate\Database\Query\Builder
      */
-    public function scopeLastMonthReport(Builder $query)
+    public function scopeLastMonthReport(Builder $query, $column = 'created_at')
     {
-        return $query->whereYear('created_at', Carbon::now()->subMonth()->year)->whereMonth('created_at', Carbon::now()->subMonth()->month);
+        return $query->whereYear($column, Carbon::now()->subMonth()->year)->whereMonth($column, Carbon::now()->subMonth()->month);
     }
 
     /**
@@ -78,9 +78,9 @@ trait Reportable
      *
      * @return Builder
      */
-    public function scopeThisWeekReport(Builder $query)
+    public function scopeThisWeekReport(Builder $query, $column = 'created_at')
     {
-        return $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
+        return $query->whereBetween($column, [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
     }
 
     /**
@@ -88,9 +88,9 @@ trait Reportable
      *
      * @return Builder
      */
-    public function scopeLastWeekReport(Builder $query)
+    public function scopeLastWeekReport(Builder $query, $column = 'created_at')
     {
-        return $query->whereBetween('created_at', [Carbon::now()->startOfWeek()->subWeek()->format('Y-m-d'), Carbon::now()->endOfWeek()->subWeek()->format('Y-m-d')]);
+        return $query->whereBetween($column, [Carbon::now()->startOfWeek()->subWeek()->format('Y-m-d'), Carbon::now()->endOfWeek()->subWeek()->format('Y-m-d')]);
     }
 
     /**
@@ -99,9 +99,9 @@ trait Reportable
      *
      * @return Builder|\Illuminate\Database\Query\Builder
      */
-    public function scopeDailyReport(Builder $query, $date = null)
+    public function scopeDailyReport(Builder $query, $date = null, $column = 'created_at')
     {
-        return $query->whereDate('created_at', $date ?? Carbon::today());
+        return $query->whereDate($column, $date ?? Carbon::today());
     }
 
     /**
@@ -109,9 +109,9 @@ trait Reportable
      *
      * @return Builder|\Illuminate\Database\Query\Builder
      */
-    public function scopeTodayReport(Builder $query)
+    public function scopeTodayReport(Builder $query, $column = 'created_at')
     {
-        return $query->whereDate('created_at', Carbon::today());
+        return $query->whereDate($column, Carbon::today());
     }
 
     /**
@@ -119,9 +119,9 @@ trait Reportable
      *
      * @return Builder|\Illuminate\Database\Query\Builder
      */
-    public function scopeYesterdayReport(Builder $query)
+    public function scopeYesterdayReport(Builder $query, $column = 'created_at')
     {
-        return $query->whereDate('created_at', Carbon::yesterday());
+        return $query->whereDate($column, Carbon::yesterday());
     }
 
     /**
@@ -132,8 +132,8 @@ trait Reportable
      *
      * @return Builder|\Illuminate\Database\Query\Builder
      */
-    public function scopeHourlyReport(Builder $query, $from = null, $to = null, $date = null)
+    public function scopeHourlyReport(Builder $query, $from = null, $to = null, $date = null, $column = 'created_at')
     {
-        return $query->whereDate('created_at', $date ?? Carbon::today())->whereTime('created_at', '>', $from ?? Carbon::now()->subHour())->whereTime('created_at', '<=', $to ?? Carbon::now());
+        return $query->whereDate($column, $date ?? Carbon::today())->whereTime($column, '>', $from ?? Carbon::now()->subHour())->whereTime($column, '<=', $to ?? Carbon::now());
     }
 }
