@@ -4,11 +4,9 @@
 
 This Laravel Eloquent extension provides record according to dates using models.
 
-<p align="center">
-<a href="https://packagist.org/packages/jakteck/anaphora"><img src="https://poser.pugx.org/jakteck/anaphora/d/total.svg?format=flat-square" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/jakteck/anaphora"><img src="https://poser.pugx.org/jakteck/anaphora/v/stable.svg?format=flat-square" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/jakteck/anaphora"><img src="https://poser.pugx.org/jakteck/anaphora/license.svg?format=flat-square" alt="License"></a>
-</p>
+[![Latest Stable Version](https://poser.pugx.org/jaktech/anaphora/v)](https://packagist.org/packages/jaktech/anaphora)
+[![Total Downloads](https://poser.pugx.org/jaktech/anaphora/downloads)](https://packagist.org/packages/jaktech/anaphora)
+[![License](https://poser.pugx.org/jaktech/anaphora/license)](https://packagist.org/packages/jaktech/anaphora)
 
 
 This package provides an event that will generate a unique slug when saving or creating any Eloquent model.
